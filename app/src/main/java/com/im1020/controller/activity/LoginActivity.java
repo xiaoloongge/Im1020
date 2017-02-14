@@ -77,18 +77,17 @@ public class LoginActivity extends AppCompatActivity {
                             EMClient.getInstance().login(username, password, new EMCallBack() {
                                 @Override
                                 public void onSuccess() {
-
-                                    ////登录成功后需要的处理
-                                    Modle.getInstance().loginSuccess(EMClient.getInstance().getCurrentUser());
-                                    //将用户保存到数据库
-                                    Modle.getInstance().getAccountDao()
-                                            .addAccount(new UserInfo(EMClient.getInstance().getCurrentUser()));
-                                    //跳转
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    //结束
-                                    finish();
-                                }
+                                    //登录成功后需要的处理
+                                Modle.getInstance().loginSuccess(EMClient.getInstance().getCurrentUser());
+                                //将用户保存到数据库
+                                Modle.getInstance().getAccountDao()
+                                .addAccount(new UserInfo(EMClient.getInstance().getCurrentUser()));
+                                //跳转
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                //结束
+                                finish();
+                            }
 
                                 @Override
                                 public void onError(int i, String s) {
