@@ -1,0 +1,29 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.2"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 22
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:24.2.0'
+    compile files('libs/BaiduLBS_Android.jar')
+    compile files('libs/glide-3.6.1.jar')
+    compile files('libs/google-play-services.jar')
+    compile files('libs/HwPush_SDK_V2705_nomap.jar')
+    compile files('libs/hyphenatechat_3.1.5.jar')
+    compile files('libs/MiPush_SDK_Client_2_2_19.jar')
+    compile files('libs/org.apache.http.legacy.jar')
+}
