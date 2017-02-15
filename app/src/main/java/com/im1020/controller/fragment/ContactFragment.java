@@ -1,5 +1,6 @@
 package com.im1020.controller.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.LinearLayout;
 
 import com.hyphenate.easeui.ui.EaseContactListFragment;
 import com.im1020.R;
+import com.im1020.controller.activity.InviteActivity;
 import com.im1020.utils.ShowToast;
 
 import butterknife.Bind;
@@ -42,7 +44,9 @@ public class ContactFragment extends EaseContactListFragment {
         titleBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowToast.show(getActivity(),"aaa");
+                //跳转到邀请界面
+                Intent intent = new Intent(getActivity(),InviteActivity.class);
+                startActivity(intent);
             }
         });
     }
