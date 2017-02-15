@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.im1020.modle.dao.AccountDao;
 import com.im1020.modle.db.AccountDb;
+import com.im1020.modle.db.DBManager;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,6 +26,7 @@ public class Modle {
 
     private static Modle modle = new Modle();
     private AccountDao accountDao;
+    private DBManager dbManager;
 
     private Modle(){};
 
@@ -63,6 +65,11 @@ public class Modle {
 
 
     public void loginSuccess(String currentUser) {
+
+        if (dbManager !=null){
+            dbManager.close();
+        }
+        dbManager = new DBManager(context, currentUser + ".db");
 
     }
 }
