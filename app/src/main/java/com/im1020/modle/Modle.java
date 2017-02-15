@@ -39,6 +39,8 @@ public class Modle {
         this.context = context;
         //创建AccountDB数据库
         accountDao = new AccountDao(context);
+        //初始化全局监听
+        new GlobalListener(context);
     }
     /*
     * 线程池分为四种
