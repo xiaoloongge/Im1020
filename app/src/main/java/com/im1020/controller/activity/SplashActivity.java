@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.hyphenate.chat.EMClient;
-import com.im1020.MainActivity;
 import com.im1020.R;
 import com.im1020.modle.Modle;
 

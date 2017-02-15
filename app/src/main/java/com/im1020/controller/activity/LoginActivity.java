@@ -7,12 +7,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
-import com.im1020.MainActivity;
 import com.im1020.R;
 import com.im1020.modle.Modle;
 import com.im1020.modle.bean.UserInfo;
