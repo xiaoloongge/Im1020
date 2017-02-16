@@ -87,7 +87,7 @@ public class ContactDao {
         for (String hxid:hxIds) {
 
             UserInfo userInfo = getContactByHx(hxid);
-            if (userInfo == null){
+            if (userInfo != null){
                 userInfos.add(userInfo);
             }
         }
