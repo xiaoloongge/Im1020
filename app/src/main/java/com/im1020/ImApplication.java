@@ -1,6 +1,7 @@
 package com.im1020;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.controller.EaseUI;
@@ -12,6 +13,7 @@ import com.im1020.modle.Modle;
 
 public class ImApplication extends Application {
 
+    private static Context context;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -21,6 +23,8 @@ public class ImApplication extends Application {
 
         //初始化Modle
         Modle.getInstance().init(this);
+
+        context = this;
     }
 
     private void initHXSdk() {
@@ -32,5 +36,9 @@ public class ImApplication extends Application {
         options.setAutoAcceptGroupInvitation(false);
         //初始化SDK
         EaseUI.getInstance().init(this,options);
+    }
+
+    public static Context getContext(){
+        return context;
     }
 }

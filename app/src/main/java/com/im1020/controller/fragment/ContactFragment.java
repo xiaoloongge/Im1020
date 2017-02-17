@@ -1,7 +1,11 @@
 package com.im1020.controller.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +15,9 @@ import android.widget.LinearLayout;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
 import com.im1020.R;
 import com.im1020.controller.activity.InviteActivity;
+import com.im1020.utils.Constant;
 import com.im1020.utils.ShowToast;
+import com.im1020.utils.SpUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,6 +35,12 @@ public class ContactFragment extends EaseContactListFragment {
     LinearLayout llNewFriends;
     @Bind(R.id.ll_groups)
     LinearLayout llGroups;
+    private BroadcastReceiver recevier = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            isShow();
+        }
+    };
 
     @Override
     protected void initView() {
@@ -49,6 +61,13 @@ public class ContactFragment extends EaseContactListFragment {
                 startActivity(intent);
             }
         });
+        //初始化小红点
+        isShow();
+
+        //注册广播
+        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(getActivity());
+
+        manager.registerReceiver(recevier,new IntentFilter(Constant.NEW_INVITE_CHANGE));
     }
 
     @Override
@@ -61,7 +80,12 @@ public class ContactFragment extends EaseContactListFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_new_friends:
-                ShowToast.show(getActivity(), "aaa");
+               //隐藏小红点
+                SpUtils.getInstace().save(SpUtils.NEW_INVITE,false);
+                isShow();
+                //跳转
+                Intent intent = new Intent(getActivity(),InviteMessageActivity.class);
+                startActivity(intent);
                 break;
             case R.id.ll_groups:
                 ShowToast.show(getActivity(), "bbb");
@@ -76,4 +100,8 @@ public class ContactFragment extends EaseContactListFragment {
         ButterKnife.unbind(this);
     }
 
+    public void isShow() {
+        boolean isShow = SpUtils.getInstace().getBoolean(SpUtils.NEW_INVITE, false);
+        contanctIvInvite.setVisibility(isShow? View.VISIBLE : View.GONE);
+    }
 }

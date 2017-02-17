@@ -72,4 +72,8 @@ public class Modle {
         dbManager = new DBManager(context, currentUser + ".db");
 
     }
+
+    public DBManager getDbManager(){
+        return dbManager;
+    }
 }
