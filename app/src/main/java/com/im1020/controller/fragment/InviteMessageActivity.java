@@ -1,7 +1,12 @@
 package com.im1020.controller.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.icu.text.IDNA;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
@@ -11,6 +16,7 @@ import com.im1020.R;
 import com.im1020.controller.adapter.InviteMessageAdapter;
 import com.im1020.modle.Modle;
 import com.im1020.modle.bean.InvitationInfo;
+import com.im1020.utils.Constant;
 import com.im1020.utils.ShowToast;
 
 import java.util.List;
@@ -23,6 +29,12 @@ public class InviteMessageActivity extends AppCompatActivity {
     @Bind(R.id.invite_msg_lv)
     ListView inviteMsgLv;
     private InviteMessageAdapter adapter;
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            refresh();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +44,12 @@ public class InviteMessageActivity extends AppCompatActivity {
 
         initView();
 
+        initData();
+    }
+
+    private void initData() {
+        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
+        manager.registerReceiver(receiver,new IntentFilter(Constant.NEW_INVITE_CHANGE));
     }
 
     private void initView() {
