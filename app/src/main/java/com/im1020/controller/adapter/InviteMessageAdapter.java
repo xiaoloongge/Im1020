@@ -29,9 +29,10 @@ public class InviteMessageAdapter extends BaseAdapter {
 
     private List<InvitationInfo> invitationInfos;
 
-    public InviteMessageAdapter(Context context) {
+    public InviteMessageAdapter(Context context,OnInviteChangeListener onInviteChangeListener) {
         this.context = context;
         invitationInfos = new ArrayList<>();
+        this.onInviteChangeListener = onInviteChangeListener;
     }
 
     public void refresh(List<InvitationInfo> invitationInfos) {
@@ -78,7 +79,7 @@ public class InviteMessageAdapter extends BaseAdapter {
         }
 
         //绑定数据
-        InvitationInfo invitationInfo = invitationInfos.get(position);
+        final InvitationInfo invitationInfo = invitationInfos.get(position);
 
         GroupInfo groupInfo = invitationInfo.getGroupInfo();
 
@@ -106,6 +107,24 @@ public class InviteMessageAdapter extends BaseAdapter {
                 }else{
                     viewHolder.tvInviteReason.setText(invitationInfo.getReason());
                 }
+                //接受按钮的监听
+                viewHolder.btInviteAccept.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (onInviteChangeListener != null){
+                            onInviteChangeListener.onAccept(invitationInfo);
+                        }
+                    }
+                });
+                //拒绝按钮的监听
+                viewHolder.btInviteReject.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (onInviteChangeListener != null){
+                            onInviteChangeListener.onReject(invitationInfo);
+                        }
+                    }
+                });
             }else if(invitationInfo.getStatus() //邀请被接受
                     == InvitationInfo.InvitationStatus.INVITE_ACCEPT_BY_PEER){
                 if (invitationInfo.getReason() == null){
@@ -141,5 +160,25 @@ public class InviteMessageAdapter extends BaseAdapter {
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
+    }
+
+    /*
+    * 第一步  定义接口
+    * 第二步  定义接口的变量
+    * 第三步  设置set方法
+    * 第四步  接受接口的实例对象
+    * 第五步  调用接口方法
+    *
+    * */
+    private OnInviteChangeListener onInviteChangeListener;
+
+    public void setOnInviteChangeListener(OnInviteChangeListener onInviteChangeListener) {
+        this.onInviteChangeListener = onInviteChangeListener;
+    }
+
+    public interface OnInviteChangeListener{
+
+        void onAccept(InvitationInfo info); //同意
+        void onReject(InvitationInfo info);  //拒绝
     }
 }
