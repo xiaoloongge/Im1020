@@ -5,6 +5,7 @@ import android.content.Context;
 import com.im1020.modle.dao.AccountDao;
 import com.im1020.modle.db.AccountDb;
 import com.im1020.modle.db.DBManager;
+import com.im1020.utils.SpUtils;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -75,5 +76,9 @@ public class Modle {
 
     public DBManager getDbManager(){
         return dbManager;
+    }
+
+    public void exitLogin() {
+        SpUtils.getInstace().destory();
     }
 }

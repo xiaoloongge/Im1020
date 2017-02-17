@@ -3,6 +3,7 @@ package com.im1020.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.hyphenate.chat.EMClient;
 import com.im1020.ImApplication;
 
 /**
@@ -16,12 +17,17 @@ public class SpUtils {
     private static SharedPreferences mSp = null;
 
     public static SpUtils getInstace(){
-
         if(mSp == null) {
-            mSp = ImApplication.getContext().getSharedPreferences("im007", Context.MODE_PRIVATE);
+            mSp = ImApplication.getContext()
+                    .getSharedPreferences(
+                            EMClient.getInstance().getCurrentUser(),
+                            Context.MODE_PRIVATE);
         }
-
         return instace;
+    }
+
+    public void destory(){
+        mSp = null;
     }
 
     // 保存

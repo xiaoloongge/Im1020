@@ -35,6 +35,7 @@ public class InviteMessageActivity extends AppCompatActivity {
             refresh();
         }
     };
+    private LocalBroadcastManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +49,15 @@ public class InviteMessageActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
+        manager = LocalBroadcastManager.getInstance(this);
         manager.registerReceiver(receiver,new IntentFilter(Constant.NEW_INVITE_CHANGE));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        manager.unregisterReceiver(receiver);
     }
 
     private void initView() {

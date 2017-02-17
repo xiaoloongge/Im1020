@@ -63,7 +63,7 @@ public class SettingsFragment extends Fragment {
                     @Override
                     public void onSuccess() {
                         //退出后其它操作
-
+                        Modle.getInstance().exitLogin();
                         //跳转到登录界面
                         ShowToast.showUI(getActivity(),"退出成功");
                         Intent intent = new Intent(getActivity(), LoginActivity.class);
