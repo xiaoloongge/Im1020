@@ -63,7 +63,8 @@
         <activity android:name=".controller.activity.MainActivity" />
         <activity android:name=".controller.activity.LoginActivity" />
         <activity android:name=".controller.activity.InviteActivity" />
-        <activity android:name=".controller.fragment.InviteMessageActivity"></activity>
+        <activity android:name=".controller.fragment.InviteMessageActivity" />
+        <activity android:name=".controller.fragment.ChatActivity"></activity>
     </application>
 
 </manifest>
