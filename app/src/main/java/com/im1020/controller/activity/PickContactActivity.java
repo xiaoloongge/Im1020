@@ -1,4 +1,4 @@
-package com.im1020.controller.fragment;
+package com.im1020.controller.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

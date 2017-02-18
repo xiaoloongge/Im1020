@@ -22,7 +22,10 @@ import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
 import com.hyphenate.exceptions.HyphenateException;
 import com.im1020.R;
+import com.im1020.controller.activity.ChatActivity;
+import com.im1020.controller.activity.GroupListActivity;
 import com.im1020.controller.activity.InviteActivity;
+import com.im1020.controller.activity.InviteMessageActivity;
 import com.im1020.modle.Modle;
 import com.im1020.modle.bean.UserInfo;
 import com.im1020.utils.Constant;
@@ -206,7 +209,16 @@ public class ContactFragment extends EaseContactListFragment {
                     Modle.getInstance().getDbManager().getContactDao()
                             .saveContacts(userinfos,true);
                     //内存和网页
-                    refreshContact();
+                    //判断activity是否为空
+                    if (getActivity() == null){
+                        return;
+                    }
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            refreshContact();
+                        }
+                    });
                 } catch (HyphenateException e) {
                     e.printStackTrace();
                 }

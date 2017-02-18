@@ -16,6 +16,7 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
+import com.im1020.controller.activity.ChatActivity;
 import com.im1020.utils.ShowToast;
 
 import java.util.List;

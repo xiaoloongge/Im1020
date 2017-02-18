@@ -1,4 +1,4 @@
-package com.im1020.controller.fragment;
+package com.im1020.controller.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,9 +13,9 @@ import com.hyphenate.chat.EMGroup;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.exceptions.HyphenateException;
 import com.im1020.R;
+import com.im1020.controller.activity.CreateGroupActivity;
 import com.im1020.controller.adapter.GroupListAdapter;
 import com.im1020.modle.Modle;
-import com.im1020.utils.ShowToast;
 
 import java.util.List;
 
