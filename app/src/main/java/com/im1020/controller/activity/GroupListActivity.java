@@ -54,7 +54,13 @@ public class GroupListActivity extends AppCompatActivity {
                             .getJoinedGroupsFromServer();
 
                     //内存和页面
-                    refresh();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            refresh();
+                        }
+                    });
                 } catch (HyphenateException e) {
                     e.printStackTrace();
                 }
