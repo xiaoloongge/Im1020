@@ -102,9 +102,11 @@ public class GroupListActivity extends AppCompatActivity {
         groupListHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowToast.show(GroupListActivity.this,"阿福老师附体了");
+               Intent intent  = new Intent(GroupListActivity.this,CreateGroupActivity.class);
+                startActivity(intent);
             }
         });
+
         //item点击事件监听
 
         lvGrouplist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
