@@ -2,14 +2,17 @@ package com.im1020.controller.fragment;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -54,6 +57,13 @@ public class ContactFragment extends EaseContactListFragment {
         }
     };
     private LocalBroadcastManager manager;
+    private List<UserInfo> contacts;
+    private BroadcastReceiver contactRecevier = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            refreshContact();
+        }
+    };
 
     @Override
     protected void initView() {
@@ -79,6 +89,7 @@ public class ContactFragment extends EaseContactListFragment {
         //注册广播
         manager = LocalBroadcastManager.getInstance(getActivity());
         manager.registerReceiver(recevier,new IntentFilter(Constant.NEW_INVITE_CHANGE));
+        manager.registerReceiver(contactRecevier,new IntentFilter(Constant.CONTACT_CHANGE));
         //初始化数据
         initData();
         //监听事件
@@ -98,6 +109,71 @@ public class ContactFragment extends EaseContactListFragment {
                 startActivity(intent);
             }
         });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if (position == 0){
+                    return false;
+                }
+
+                showDialog(position);
+                return true;
+            }
+        });
+    }
+
+    private void showDialog(final int position) {
+
+        new AlertDialog.Builder(getActivity())
+                .setMessage("确定要删除吗？")
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        deleteContact(position);
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    private void deleteContact(final int position) {
+
+        Modle.getInstance().getGlobalThread().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    //获取到这个用户的环信ID
+                    final UserInfo userInfo = contacts.get(position - 1);
+                    //网络删除
+                    EMClient.getInstance().contactManager().deleteContact(userInfo.getHxid());
+                    //本地删除 删除联系人
+                    Modle.getInstance().getDbManager().getContactDao()
+                            .deleteContactByHxId(userInfo.getHxid());
+                    //删除邀请信息
+                    Modle.getInstance().getDbManager().getInvitationDao()
+                            .removeInvitation(userInfo.getHxid());
+                    //刷新
+                    refreshContact();
+
+                    ShowToast.showUI(getActivity(),"删除成功");
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                    ShowToast.showUI(getActivity(),"删除失败"+e.getMessage());
+                }
+            }
+        });
+
+
     }
 
     @Override
@@ -141,7 +217,7 @@ public class ContactFragment extends EaseContactListFragment {
 
     private void refreshContact() {
         //从本地取数据
-        List<UserInfo> contacts = Modle.getInstance().getDbManager().getContactDao()
+        contacts = Modle.getInstance().getDbManager().getContactDao()
                 .getContacts();
         //校验
         if (contacts == null){
@@ -150,7 +226,7 @@ public class ContactFragment extends EaseContactListFragment {
 
         //转换数据
         Map<String,EaseUser> maps = new HashMap<>();
-        for (UserInfo userInfo:contacts) {
+        for (UserInfo userInfo: contacts) {
             EaseUser user = new EaseUser(userInfo.getHxid());
             maps.put(userInfo.getHxid(),user);
         }
