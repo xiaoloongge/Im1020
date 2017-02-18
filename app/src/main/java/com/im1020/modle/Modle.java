@@ -70,6 +70,7 @@ public class Modle {
         if (dbManager !=null){
             dbManager.close();
         }
+
         dbManager = new DBManager(context, currentUser + ".db");
 
     }
