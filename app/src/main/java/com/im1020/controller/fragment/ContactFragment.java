@@ -254,7 +254,9 @@ public class ContactFragment extends EaseContactListFragment {
                 startActivity(intent);
                 break;
             case R.id.ll_groups:
-                ShowToast.show(getActivity(), "bbb");
+                //跳转到群列表
+                Intent groupIntent = new Intent(getActivity(),GroupListActivity.class);
+                startActivity(groupIntent);
                 break;
         }
     }

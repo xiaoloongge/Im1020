@@ -41,7 +41,7 @@
         <!-- 设置环信应用的appkey -->
         <meta-data
             android:name="EASEMOB_APPKEY"
-            android:value="1179161211115462#atguigu001" />
+            android:value="1179161211115462#atguigu0828" />
         <!-- 声明sdk所需的service -->
         <service
             android:name="com.hyphenate.chat.EMChatService"
@@ -64,7 +64,8 @@
         <activity android:name=".controller.activity.LoginActivity" />
         <activity android:name=".controller.activity.InviteActivity" />
         <activity android:name=".controller.fragment.InviteMessageActivity" />
-        <activity android:name=".controller.fragment.ChatActivity"></activity>
+        <activity android:name=".controller.fragment.ChatActivity" />
+        <activity android:name=".controller.fragment.GroupListActivity"></activity>
     </application>
 
 </manifest>
