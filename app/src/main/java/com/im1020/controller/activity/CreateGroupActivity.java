@@ -122,7 +122,7 @@ public class CreateGroupActivity extends AppCompatActivity {
 
                     finish();
 
-                    
+
                 } catch (HyphenateException e) {
                     e.printStackTrace();
                     ShowToast.showUI(CreateGroupActivity.this, "创建群失败" + e.getMessage());
