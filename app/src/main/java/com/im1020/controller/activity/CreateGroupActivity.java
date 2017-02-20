@@ -84,6 +84,17 @@ public class CreateGroupActivity extends AppCompatActivity {
 
                 try {
                     String[] memberses = data.getStringArrayExtra("members");
+
+                    //判断
+                    if (memberses == null){
+                        return;
+                    }
+
+                    if (memberses.length == 0){
+                        ShowToast.showUI(CreateGroupActivity.this,"没人还加啥？？？");
+                        return;
+                    }
+
                     //去环信服务器创建群
                     EMGroupManager.EMGroupOptions option = new EMGroupManager.EMGroupOptions();
 
