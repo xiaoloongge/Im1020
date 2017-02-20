@@ -83,6 +83,29 @@ public class PickAdapter extends BaseAdapter {
     }
 
 
+    /*
+    * 获取被选择中的联系人
+    * */
+    public List<String> getContactCheck() {
+
+        //校验
+        if (pickInfos == null){
+            return null;
+        }
+
+        List<String> userInfos = new ArrayList<>();
+        for (PickInfo pickInfo:pickInfos
+             ) {
+            //判断是否选中了联系人
+            if (pickInfo.isCheck()){
+                userInfos.add(pickInfo.getUserInfo().getHxid());
+            }
+        }
+
+        return userInfos;
+    }
+
+
     class ViewHolder {
 
         @Bind(R.id.cb_item_pick_contacts)
