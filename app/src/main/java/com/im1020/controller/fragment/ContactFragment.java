@@ -67,6 +67,12 @@ public class ContactFragment extends EaseContactListFragment {
             refreshContact();
         }
     };
+    private BroadcastReceiver groupRecevier = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            isShow();
+        }
+    };
 
     @Override
     protected void initView() {
@@ -93,6 +99,7 @@ public class ContactFragment extends EaseContactListFragment {
         manager = LocalBroadcastManager.getInstance(getActivity());
         manager.registerReceiver(recevier,new IntentFilter(Constant.NEW_INVITE_CHANGE));
         manager.registerReceiver(contactRecevier,new IntentFilter(Constant.CONTACT_CHANGE));
+        manager.registerReceiver(groupRecevier,new IntentFilter(Constant.GROUP_INVITE_CHAGE));
         //初始化数据
         initData();
         //监听事件
@@ -278,7 +285,10 @@ public class ContactFragment extends EaseContactListFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        //解注册广播监听
         manager.unregisterReceiver(recevier);
+        manager.unregisterReceiver(contactRecevier);
+        manager.unregisterReceiver(groupRecevier);
     }
 
     public void isShow() {
