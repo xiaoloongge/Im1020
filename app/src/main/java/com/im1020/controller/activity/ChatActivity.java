@@ -51,9 +51,8 @@ public class ChatActivity extends AppCompatActivity {
                         ==EaseConstant.CHATTYPE_GROUP){
 
                 }*/
-                intent.putExtra("userid",getIntent().getExtras()
+                intent.putExtra("groupid",getIntent().getExtras()
                         .getString(EaseConstant.EXTRA_USER_ID));
-
                 startActivity(intent);
 
             }
