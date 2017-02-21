@@ -16,8 +16,12 @@ import com.im1020.ImApplication;
 import com.im1020.R;
 import com.im1020.controller.adapter.GroupDetailAdapter;
 import com.im1020.modle.Modle;
+import com.im1020.modle.bean.UserInfo;
 import com.im1020.utils.Constant;
 import com.im1020.utils.ShowToast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,6 +34,9 @@ public class ChatDetailsActivity extends AppCompatActivity {
     @Bind(R.id.bt_group_detail)
     Button btGroupDetail;
     private String groupid;
+    private String owner;
+    private EMGroup group;
+    private GroupDetailAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,19 +45,16 @@ public class ChatDetailsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
 
-        initView();
+        getData();
+        //initView();
         initData();
 
+        //获取群成员
+        getGroupMembers();
+
     }
 
-    private void initView() {
-
-       // GroupDetailAdapter adapter = new GroupDetailAdapter()
-       // gvGroupDetail.setAdapter();
-    }
-
-    private void initData() {
-
+    private void getData() {
         //获取群id
         groupid = getIntent().getStringExtra("groupid");
 
@@ -58,10 +62,56 @@ public class ChatDetailsActivity extends AppCompatActivity {
 
             return;
         }
+    }
+
+    private void getGroupMembers() {
+
+        Modle.getInstance().getGlobalThread().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //获取群组
+                    EMGroup emGroup = EMClient.getInstance().groupManager()
+                            .getGroupFromServer(groupid);
+
+                    //获取群成员
+                    List<String> members = emGroup.getMembers();
+
+                    //转类型
+                    final List<UserInfo> userinfos = new ArrayList<UserInfo>();
+
+                    for (String hxid:members
+                         ) {
+                        userinfos.add(new UserInfo(hxid));
+                    }
+                    //内存和网页
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.refresh(userinfos);
+                        }
+                    });
+
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+
+
+    private void initView() {
+
+    }
+
+    private void initData() {
+
         //获取当前的群组
-        EMGroup group = EMClient.getInstance().groupManager().getGroup(groupid);
+        group = EMClient.getInstance().groupManager().getGroup(groupid);
         //获取群主
-        String owner = group.getOwner();
+        owner = group.getOwner();
+
         if (EMClient.getInstance().getCurrentUser().equals(owner)){
             //是群主
             btGroupDetail.setText("解散群");
@@ -126,6 +176,12 @@ public class ChatDetailsActivity extends AppCompatActivity {
                 }
             });
         }
+
+        //判断是否有邀请的权限
+        boolean isModify = EMClient.getInstance()
+                .getCurrentUser().equals(owner) || group.isPublic();
+        adapter = new GroupDetailAdapter(this,isModify);
+        gvGroupDetail.setAdapter(adapter);
     }
 
     private void exitGroup() {

@@ -46,6 +46,7 @@ public class GroupDetailAdapter extends BaseAdapter {
         initUser();
         //添加群成员
         this.userInfos.addAll(0, userinfos);
+        notifyDataSetChanged();
     }
 
     private void initUser() {
@@ -132,6 +133,7 @@ public class GroupDetailAdapter extends BaseAdapter {
                     viewHolder.ivMemberDelete.setVisibility(View.GONE);
                 }
 
+                viewHolder.tvMemberName.setText(userInfos.get(position).getUsername());
                 viewHolder.ivMemberPhoto.setImageResource(R.mipmap.em_default_avatar);
             }
 
