@@ -27,10 +27,11 @@ public class GroupDetailAdapter extends BaseAdapter {
     private List<UserInfo> userInfos;
     private boolean isDeleteModle = false; //删除模式
 
-    public GroupDetailAdapter(Context context, boolean isModify) {
+    public GroupDetailAdapter(Context context, boolean isModify,OnMembersChangeListener onMembersChangeListener) {
         this.context = context;
         this.isModify = isModify;
         userInfos = new ArrayList<>();
+        this.onMembersChangeListener = onMembersChangeListener;
 
     }
 
@@ -72,7 +73,7 @@ public class GroupDetailAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         ViewHolder viewHolder = null;
 
@@ -159,6 +160,9 @@ public class GroupDetailAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
 
+                        if (onMembersChangeListener != null){
+                            onMembersChangeListener.onAddGroupMember(userInfos.get(position));
+                        }
                     }
                 });
             }else{//群成员
@@ -166,7 +170,9 @@ public class GroupDetailAdapter extends BaseAdapter {
                 viewHolder.ivMemberDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        if (onMembersChangeListener != null){
+                            onMembersChangeListener.onRemoveGroupMember(userInfos.get(position));
+                        }
                     }
                 });
             }
@@ -202,5 +208,14 @@ public class GroupDetailAdapter extends BaseAdapter {
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
+    }
+
+
+    private OnMembersChangeListener onMembersChangeListener;
+
+    public interface OnMembersChangeListener{
+
+        void onRemoveGroupMember(UserInfo userInfo);
+        void onAddGroupMember(UserInfo userInfo);
     }
 }
