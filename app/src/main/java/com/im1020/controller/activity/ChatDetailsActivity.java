@@ -14,6 +14,7 @@ import com.hyphenate.chat.EMGroup;
 import com.hyphenate.exceptions.HyphenateException;
 import com.im1020.ImApplication;
 import com.im1020.R;
+import com.im1020.controller.adapter.GroupDetailAdapter;
 import com.im1020.modle.Modle;
 import com.im1020.utils.Constant;
 import com.im1020.utils.ShowToast;
@@ -37,8 +38,15 @@ public class ChatDetailsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
 
+        initView();
         initData();
 
+    }
+
+    private void initView() {
+
+       // GroupDetailAdapter adapter = new GroupDetailAdapter()
+       // gvGroupDetail.setAdapter();
     }
 
     private void initData() {
