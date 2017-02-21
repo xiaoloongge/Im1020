@@ -10,6 +10,8 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMGroup;
 import com.im1020.R;
 import com.im1020.controller.adapter.PickAdapter;
 import com.im1020.modle.Modle;
@@ -32,6 +34,8 @@ public class PickContactActivity extends AppCompatActivity {
     ListView lvPick;
     private PickAdapter adapter;
     private List<PickInfo> pickInfos;
+    private List<String> members;
+    private boolean isMember = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +43,34 @@ public class PickContactActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pick_contact);
         ButterKnife.bind(this);
 
+
+        getGroupId();
         initView();
 
         //获取数据
         initData();
 
         initListener();
+    }
+
+    private void getGroupId() {
+
+        String groupid = getIntent().getStringExtra("groupid");
+
+        if (groupid == null){
+            //说明是创建群
+
+            members = new ArrayList<>();
+
+            isMember = false;
+        }else{
+            isMember = true;
+            //添加群成员
+            EMGroup group = EMClient.getInstance().groupManager().getGroup(groupid);
+
+            members = group.getMembers();
+        }
+
     }
 
     private void initListener() {
@@ -64,7 +90,7 @@ public class PickContactActivity extends AppCompatActivity {
                 //设置当前的状态
                 pickInfo.setCheck(cbPick.isChecked());
 
-                adapter.refresh(pickInfos);
+                adapter.refresh(pickInfos,members);
             }
         });
 
@@ -89,7 +115,7 @@ public class PickContactActivity extends AppCompatActivity {
         for (UserInfo userInfo:contacts) {
             pickInfos.add(new PickInfo(userInfo,false));
         }
-        adapter.refresh(pickInfos);
+        adapter.refresh(pickInfos,members);
     }
 
     private void initView() {
@@ -114,7 +140,12 @@ public class PickContactActivity extends AppCompatActivity {
 
         intent.putExtra("members",contactCheck.toArray(new String[contactCheck.size()]));
 
-        setResult(1,intent);
+        if (isMember){
+            setResult(2,intent);
+        }else{
+            setResult(1,intent);
+        }
+
 
         //结束当前页面
         finish();

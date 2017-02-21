@@ -24,22 +24,31 @@ public class PickAdapter extends BaseAdapter {
 
     private Context context;
     private List<PickInfo> pickInfos;
+    private List<String> members;
 
     public PickAdapter(Context context) {
         this.context = context;
         pickInfos = new ArrayList<>();
+        members = new ArrayList<>();
     }
 
-    public void refresh(List<PickInfo> pickInfos) {
+    public void refresh(List<PickInfo> pickInfos,List<String> members) {
 
-        if (pickInfos == null) {
-            return;
+        if (pickInfos != null) {
+            this.pickInfos.clear();
+            this.pickInfos.addAll(pickInfos);
+            notifyDataSetChanged();
         }
 
-        this.pickInfos.clear();
-        this.pickInfos.addAll(pickInfos);
+        if (members != null && members.size()>=0){
 
-        notifyDataSetChanged();
+            this.members.clear();
+            this.members.addAll(members);
+        }
+
+      /*  if (members != null && members.size()==0){
+
+        }*/
 
     }
 
@@ -78,6 +87,11 @@ public class PickAdapter extends BaseAdapter {
         viewHolder.cbItemPickContacts.setChecked(pickInfo.isCheck());
 
         viewHolder.tvItemPickContactsName.setText(pickInfo.getUserInfo().getUsername());
+
+        /*
+        * 根据members可以删除出来 已经添加过的好友
+        *
+        * */
 
         return convertView;
     }

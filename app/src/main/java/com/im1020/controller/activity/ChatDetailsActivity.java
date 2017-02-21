@@ -238,8 +238,14 @@ public class ChatDetailsActivity extends AppCompatActivity {
             @Override
             public void onAddGroupMember(UserInfo userInfo) {
                 ShowToast.show(ChatDetailsActivity.this,"添加成功");
+
+                //跳转到选择好友界面
+                Intent intent = new Intent(ChatDetailsActivity.this,PickContactActivity.class);
+                intent.putExtra("groupid",group.getGroupId());
+                startActivityForResult(intent,2);
             }
         });
+
         gvGroupDetail.setAdapter(adapter);
     }
 
@@ -254,4 +260,40 @@ public class ChatDetailsActivity extends AppCompatActivity {
         manager.sendBroadcast(intent);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 2){
+
+            //添加选中的群成员
+            addMembers(data);
+        }
+    }
+
+    private void addMembers(Intent data) {
+
+        final String[] memberses = data.getStringArrayExtra("members");
+
+        if (memberses == null || memberses.length ==0){
+            return;
+        }
+
+        Modle.getInstance().getGlobalThread().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    EMClient.getInstance().groupManager()
+                            .addUsersToGroup(group.getGroupId(),memberses);
+
+                    ShowToast.showUI(ChatDetailsActivity.this,"添加群成员成功");
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                    ShowToast.showUI(ChatDetailsActivity.this,"添加群成员失败"+e.getMessage());
+                }
+            }
+        });
+
+    }
 }
