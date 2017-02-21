@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
@@ -51,7 +52,32 @@ public class ChatDetailsActivity extends AppCompatActivity {
 
         //获取群成员
         getGroupMembers();
+        //监听事件
+        initListener();
 
+    }
+
+    private void initListener() {
+        gvGroupDetail.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()){
+
+                    case MotionEvent.ACTION_DOWN:
+
+                        //获取当前gridview适配器中的deleteModle
+                        boolean deleteModle = adapter.getDeleteModle();
+                        //只有删除模式下才管用
+                        if (deleteModle){
+                            adapter.setDeleteModle(false);
+                        }
+
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     private void getData() {
